@@ -5,7 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\WalletController;
 
-Route::post('auth/google', [AuthController::class, 'googleCallback']);
+Route::get('auth/google/redirect', [AuthController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('ads', AdController::class);
