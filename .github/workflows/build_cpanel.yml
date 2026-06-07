@@ -1,0 +1,46 @@
+name: Build cPanel Deploy Zip
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install frontend deps and build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Copy frontend dist to backend/public/spa
+        run: |
+          mkdir -p backend/public/spa
+          rm -rf backend/public/spa/* || true
+          cp -R frontend/dist/* backend/public/spa/
+
+      - name: Clean dev folders
+        run: |
+          rm -rf backend/node_modules || true
+          rm -rf backend/vendor || true
+
+      - name: Create cPanel zip
+        run: |
+          mkdir -p cpanel_build
+          cd cpanel_build
+          zip -r ads-cpanel-deploy.zip ../backend > /dev/null
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ads-cpanel-deploy
+          path: cpanel_build/ads-cpanel-deploy.zip
