@@ -1,0 +1,5 @@
+# Frontend: brief notes
+
+- Login flow uses popup OAuth with Socialite backend endpoints.
+- API requests sent to /api by default; change VITE_API_BASE_URL in `frontend/.env` if needed.
+- Token stored in localStorage as `api_token` and attached as Bearer token.
