@@ -1,0 +1,11 @@
+/vendor/
+/node_modules/
+/.env
+/.env.*
+/storage/
+/bootstrap/cache/
+/public/storage
+.DS_Store
+.env.local
+.env.*.local
+
